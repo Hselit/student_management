@@ -3,10 +3,9 @@ var router = express.Router();
 var jwt = require('jsonwebtoken')
 
 const {validateStaffId,validateStaffCreate,validateStaffUpdate,validateStaffLogin} = require('../middleware/staffValidator');
+const { verifyToken, roleMiddleware } = require('../middleware/auth');
 
 var db = require('../models/index');
-const { verifyToken, roleMiddleware } = require('../middleware/auth');
-const { where, Model } = require('sequelize');
 var {staff,student} = db;
 
 //staff login
@@ -120,8 +119,8 @@ router.delete('/:id',verifyToken,roleMiddleware(["Admin"]),validateStaffId,async
   }
 });
 
-//get staffs and students
-router.get('/getallstudent/:id',validateStaffId,async(req,res)=>{
+//get staffs with students
+router.get('/getallstudent/:id',verifyToken,roleMiddleware(["Admin"]),validateStaffId,async(req,res)=>{
   try{
     const {id} = req.params;
     const result = await staff.findByPk(id,{
@@ -134,7 +133,7 @@ router.get('/getallstudent/:id',validateStaffId,async(req,res)=>{
       }
     });
     if(!result){
-      return res.status(404).json({message:"No Student Found for Staff"});
+      return res.status(404).json({message:"No Students Found for Staff"});
     }
     res.status(200).json(result);
   }

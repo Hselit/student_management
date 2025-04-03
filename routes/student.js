@@ -7,6 +7,7 @@ const {validateStudentUpdate,validateStudentCreate,validateStudentId,validateStu
 const {verifyToken,roleMiddleware} = require('../middleware/auth');
 
 var db = require('../models/index');
+const { Model } = require('sequelize');
 var {staff,student} = db;
 
 router.post('/studentlogin',validateStudentLogin,async function(req,res){
@@ -117,6 +118,31 @@ router.delete('/:id',verifyToken,roleMiddleware(["Admin"]),validateStudentId,asy
     res.status(200).json({message:"student Deleted Successfully"});
   }
   catch(error){
+    console.log(error);
+    res.status(500).json({error:"Error Occured ",error});
+  }
+});
+
+//get student with staff
+router.get('/getstaff/:id',verifyToken,roleMiddleware(["Admin"]),validateStudentId,async(req,res)=>{
+  try{
+    const {id} = req.params;
+    const result = await staff.findByPk(id,{
+      include:{
+        model:student,
+        attribute:{
+          exclude:['password']
+        }
+      },
+      attribute:{
+        exclude:['password']
+      }
+    });
+    if(!result){
+      return res.status(404).json({message:"No Staff Found"});
+    }
+    res.status(200).json(result);
+  }catch(error){
     console.log(error);
     res.status(500).json({error:"Error Occured ",error});
   }

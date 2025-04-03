@@ -25,6 +25,10 @@ module.exports = {
         defaultValue:18,
         allowNull:false
       },
+      password:{
+        type:Sequelize.STRING,
+        allowNull:false
+      },
       staff_id:{
         type:DataTypes.INTEGER,
         references:{

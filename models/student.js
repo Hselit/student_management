@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.INTEGER,
       defaultValue:18
     },
+    password:{
+      type:DataTypes.STRING,
+      allowNull:false
+    },
     staff_id:{
       type:DataTypes.INTEGER,
       references:{
@@ -35,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         key:'id'
       }
     }
+
   }, {
     sequelize,
     modelName: 'student',

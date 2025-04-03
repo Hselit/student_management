@@ -17,7 +17,11 @@ module.exports = {
         type: Sequelize.STRING,
       },
       experience: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
+        allowNull:false
+      },
+      password:{
+        type:Sequelize.STRING,
         allowNull:false
       }
     },{

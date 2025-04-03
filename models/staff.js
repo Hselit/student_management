@@ -26,9 +26,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:true
     },
     experience: {
+      type:DataTypes.INTEGER,
+      allowNull:false
+    },
+    password:{
       type:DataTypes.STRING,
       allowNull:false
-    }
+    },
   }, {
     sequelize,
     modelName: 'staff',

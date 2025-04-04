@@ -7,7 +7,7 @@ const {validateStudentUpdate,validateStudentCreate,validateStudentId,validateStu
 const {verifyToken,roleMiddleware} = require('../middleware/auth');
 
 var db = require('../models/index');
-const { Model } = require('sequelize');
+const upload = require('../middleware/imageUpload');
 var {staff,student} = db;
 
 router.post('/studentlogin',validateStudentLogin,async function(req,res){
@@ -62,15 +62,15 @@ router.get('/:id',verifyToken,roleMiddleware(["Admin"]),validateStudentId,async(
 });
 
 //student post method
-router.post('/',verifyToken,roleMiddleware(["Admin"]),validateStudentCreate,async function(req,res){
+router.post('/',verifyToken,roleMiddleware(["Admin"]),upload.single('profile'),validateStudentCreate,async function(req,res){
   try{
-    const {staffName,role,experience} = req.body;
+    const {studentName,password,marks,age,staff_id} = req.body;
+    const profile = req.file ? req.file.filename : null;
 
     // if(!staffName || !experience || !role){
     //   return res.status(400).json({message:"All Fields Required"});
     // }
-
-    await student.create({staffName,role,experience,password});
+    await student.create({studentName,password,age,marks,staff_id,profile});
     res.status(201).json({message:"student Added Successfully"});
   }
   catch(error){
@@ -80,10 +80,11 @@ router.post('/',verifyToken,roleMiddleware(["Admin"]),validateStudentCreate,asyn
 });
 
 //student update method
-router.put('/:id',verifyToken,roleMiddleware(["Admin"]),validateStudentUpdate,async(req,res) => {
+router.put('/:id',verifyToken,roleMiddleware(["Admin"]),upload.single('profile'),validateStudentUpdate,async(req,res) => {
   try{
     const {id} = req.params;
     const {studentName,marks,age,staff_id,password} = req.body;
+    const image = req.file ? req.file.filename : null;
 
     // if(!studentName || !marks || !age ||!staff_id){
     //   return res.status(400).json({message:"All fields are required"});
@@ -94,7 +95,10 @@ router.put('/:id',verifyToken,roleMiddleware(["Admin"]),validateStudentUpdate,as
     if(!checkexistdata){
       return res.status(404).json({message:"Not student found with the id"});
     }
-    const dt = await student.update({studentName,marks,age,staff_id,password},{where:{id}});
+    const updateData = { studentName, marks, age, staff_id, password };
+    if (image) updateData.profile = image;
+
+    const dt = await student.update(updateData,{where:{id}});
     if(dt[0] === 1){
       return res.status(200).json({ message: "student updated successfully" });
     }

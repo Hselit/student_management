@@ -20,6 +20,7 @@ router.post('/stafflogin',validateStaffLogin,async function(req,res){
       return res.status(400).json({message:"Invalid Password"});
     }
     const token = jwt.sign({staffName,password,role},process.env.JWT_SECRET,{expiresIn:'1h'});
+    console.log(token);
     res.status(200).json({message:"Logged In Successfully",token});
   }
   catch(error){
@@ -60,10 +61,10 @@ router.get('/:id',verifyToken,roleMiddleware(["Admin"]),validateStaffId,async(re
 });
 
 //staff post method
-router.post('/',verifyToken,roleMiddleware(["Admin"]),validateStaffCreate,async function(req,res){
+router.post('/',validateStaffCreate,async function(req,res){
   try{
     const {staffName,role,experience,password} = req.body;
-    if(!staffName || !experience || !role||!password){
+    if(!staffName || !experience || !role|| !password){
       return res.status(400).json({message:"All Fields Required"});
     }
     await staff.create({staffName,role,experience,password});

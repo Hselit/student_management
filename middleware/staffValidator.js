@@ -112,4 +112,4 @@ function handleValidationError(req,res,next){
    next();
 }
 
-module.exports = { validateStaffCreate, validateStaffUpdate, validateStaffId, validateStaffLogin}
+module.exports = { validateStaffCreate, validateStaffUpdate, validateStaffId, validateStaffLogin }

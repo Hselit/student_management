@@ -29,6 +29,10 @@ module.exports = {
         type:Sequelize.STRING,
         allowNull:false
       },
+      profile:{
+        type:Sequelize.STRING,
+        allowNull:true
+      },
       staff_id:{
         type:DataTypes.INTEGER,
         references:{

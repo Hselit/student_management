@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.STRING,
       allowNull:false
     },
+    profile:{
+      type:DataTypes.STRING,
+      allowNull:true
+    },
     staff_id:{
       type:DataTypes.INTEGER,
       references:{

@@ -17,32 +17,35 @@ module.exports = {
       staffName:"Arun Prakash",
       role:"Admin",
       experience:10,
-      password:"123456"
+      password:"12345678"
     },
     {
       staffName:"Gayathri",
       role:"teacher",
       experience:5,
-      password:"123456"
+      password:"12345678"
     }
    ],{});
 
-   await queryInterface.bulkInsert('students',[
+   await queryInterface.bulkInsert('students', [
     {
-      studentName:"Arjun",
-      marks:99,
-      age:20,
-      staff_id:1,
-      password:"123456"
+      studentName: "Arjun",
+      marks: 99,
+      age: 20,
+      staff_id: 1,
+      password: "12345678",
+      profile: "1741785439828.png"
     },
     {
-      studentName:"Paul",
-      marks:100,
-      age:29,
-      staff_id:2,
-      password:"123456"
+      studentName: "Paul",
+      marks: 100,
+      age: 29,
+      staff_id: 2,
+      password: "12345678",
+      profile: "1743512576015.png"
     }
-   ]);
+  ], {});
+  
   },
 
   async down (queryInterface, Sequelize) {
